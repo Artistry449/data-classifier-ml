@@ -40,7 +40,7 @@ const HomePage = () => {
 
   const handleCheck = () => {
 
-  }
+  };
 
   const wordCount = text.trim().split(/\s+/).filter((word) => word).length;
   const charCount = text.replace(/\s/g, "").length;
@@ -62,16 +62,15 @@ const HomePage = () => {
 
             <button
               onClick={handleCopy}
-              className={`bg-gray-100 p-2 rounded hover:bg-gray-200 ${
-                !isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""
-              }`}
+              className={`bg-yellow-100 p-3 rounded-md hover:bg-yellow-200 text-yellow-700 ${!isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""}`}
               disabled={!isClipboardAvailable}
             >
               <FaRegCopy size={20}/>
             </button>
+
             <button
               onClick={handleClear}
-              className="bg-gray-100 p-2 rounded hover:bg-gray-200"
+              className="bg-gray-100 p-3 rounded-md hover:bg-gray-200 text-gray-700"
             >
               <MdOutlineDeleteForever size={20}/>
             </button>
@@ -101,16 +100,31 @@ const HomePage = () => {
             </div>
             
           </div>
-          </div>
-          
-
         </div>
 
-        <div className="w-full md:w-1/4 ml-5 border-gray-200 bg-white rounded-lg shadow p-6">
-          <h2 className="text-sm font-semibold">Алдаатай үгсийн жагсаалт</h2>
+
+        {/* <div className="w-full md:w-1/3 ml-3 space-y-3">
+          <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg">
+            <h2 className="text-sm font-semibold text-gray-700 mb-4">Мэдээний төрөл</h2>          </div>
+
+    <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg">
+            <h2 className="text-sm font-semibold text-gray-700 mb-4">Алдаатай үгсийн жагсаалт</h2>
+
+          </div>
+        </div> */}
+        <div className="h-full grid col-span-1 ml-3 md:w-1/4 gap-3">
+          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-3">
+            <h2 className="text-sm font-semibold pb-1">Алдаатай үгсийн жагсаалт</h2>
+            <div className="w-full border bg-gray-700"/>
+          </div>
+          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-1">
+            <h2 className="text-sm font-semibold pb-1">Текстийн төрөл</h2>
+            <div className="w-full border bg-gray-700"/>
+          </div>
         </div>
       </div>
     </div>
+  </div>
   );
 };
 
