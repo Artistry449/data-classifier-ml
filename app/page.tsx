@@ -39,81 +39,85 @@ const HomePage = () => {
 
   const handleCheck = () => {
 
-  }
+  };
 
   const wordCount = text.trim().split(/\s+/).filter((word) => word).length;
   const charCount = text.replace(/\s/g, "").length;
 
   return (
-    <div className="bg-gray-50 flex items-center justify-center h-screen">
-      <div className="flex flex-col md:flex-row w-full h-full max-w-6xl max-h-96">
-        <div className="w-full flex h-full">
-          <div className="flex flex-col space-y-2 mr-5">
-          <button
+    <div className="bg-gray-50 flex items-center justify-center min-h-screen p-6">
+      <div className="flex flex-col md:flex-row w-full max-w-6xl h-full space-y-8 md:space-y-0 md:space-x-8">
+
+        <div className="w-full md:w-2/3 flex flex-col space-y-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            <button
               onClick={handlePaste}
-              className={`bg-gray-100 p-1 rounded hover:bg-gray-200 ${
-                !isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""
-              }`}
+              className={`bg-blue-100 p-3 rounded-md hover:bg-blue-200 text-blue-700 ${!isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""}`}
               disabled={!isClipboardAvailable}
             >
-              <img src="paste-regular.svg" alt="Paste" className="w-10 h-10" />
-          </button>
+              <img src="paste-regular.svg" alt="Paste" className="w-12 h-12" />
+            </button>
 
             <button
               onClick={handleCopy}
-              className={`bg-gray-100 p-2 rounded hover:bg-gray-200 ${
-                !isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""
-              }`}
+              className={`bg-yellow-100 p-3 rounded-md hover:bg-yellow-200 text-yellow-700 ${!isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""}`}
               disabled={!isClipboardAvailable}
             >
-              <img src="copy-regular.svg" alt="Copy" className="w-10 h-10" />
+              <img src="copy-regular.svg" alt="Copy" className="w-12 h-12" />
             </button>
+
             <button
               onClick={handleClear}
-              className="bg-gray-100 p-2 rounded hover:bg-gray-200"
+              className="bg-gray-100 p-3 rounded-md hover:bg-gray-200 text-gray-700"
             >
               Clear
             </button>
 
             <button
               onClick={handleCheck}
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded "
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded-md"
             >
               Алдааг шалгах
             </button>
           </div>
-          <div className="flex flex-col w-full border border-gray-300 rounded resize-none bg-white rounded-lg shadow p-6 h-full">
-            {/* <textarea
+
+          <div className="bg-white border border-gray-300 rounded-lg shadow-lg p-6">
+            <textarea
               placeholder="Type your text here..."
               value={text}
-              onChange={(e) => setText(e.target.value)}
-              maxLength={10}
-              className="w-full h-full outline-none"
-            /> */}
-            <textarea
-                placeholder="Type your text here..."
-                value={text}
-                onChange={(e) => {
-                  const input = e.target.value;
-                  setText(input.slice(0, 1200)); 
-                }}
-                maxLength={1200} 
-                className="w-full h-full outline-none"
-              />
-
-        <div className="flex justify-between mt-4 text-sm text-gray-600">
-            <div>Үгийн тоо: {wordCount}</div>
-            <div>
-              Тэмдэгтийн тоо: {charCount}/1200
+              onChange={(e) => {
+                const input = e.target.value;
+                setText(input.slice(0, 1200));
+              }}
+              maxLength={1200}
+              className="w-full h-48 outline-none resize-none p-4 text-lg border-2 border-gray-200 rounded-lg focus:border-blue-400"
+            />
+            <div className="flex justify-between mt-4 text-sm text-gray-600">
+              <div>Үгийн тоо: {wordCount}</div>
+              <div>Тэмдэгтийн тоо: {charCount}/1200</div>
             </div>
           </div>
-          </div>
-          
-
         </div>
 
-        <div className="w-full md:w-1/4 ml-5 border-gray-200 p-4 bg-white rounded-lg shadow p-6">
-          <h2 className="text-lg font-semibold">Алдаатай үгсийн жагсаалт</h2>
+
+        <div className="w-full md:w-1/3 space-y-6">
+          <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">Мэдээний төрөл</h2>
+            <ul className="space-y-2">
+              <li className="text-gray-600">Gadaad</li>
+              <li className="text-gray-600">Sport</li>
+            </ul>
+          </div>
+
+          <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">Алдаатай үгсийн жагсаалт</h2>
+
+          </div>
+
+          <div className="bg-white border border-gray-300 p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">Үгсийн жагсаалт</h2>
+
+          </div>
         </div>
       </div>
     </div>
