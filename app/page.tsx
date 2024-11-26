@@ -107,8 +107,16 @@ const HomePage = () => {
             <h2 className="text-sm font-semibold pb-1">Алдаатай үгсийн жагсаалт</h2>
             <div className="w-full border bg-gray-700"/>
           </div>
-          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-1">
+          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-3">
+            <h2 className="text-sm font-semibold pb-1">Хамгийн их давтагдсан үгсийн жагсаалт</h2>
+            <div className="w-full border bg-gray-700"/>
+          </div>
+          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-2">
             <h2 className="text-sm font-semibold pb-1">Текстийн төрөл</h2>
+            <div className="w-full border bg-gray-700"/>
+          </div>
+          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-1">
+            <h2 className="text-sm font-semibold pb-1">Ялгаатай үгийн тоо</h2>
             <div className="w-full border bg-gray-700"/>
           </div>
         </div>
