@@ -91,15 +91,15 @@ const HomePage = () => {
               className="w-full h-full outline-none"
             /> */}
             <textarea
-  placeholder="Type your text here..."
-  value={text}
-  onChange={(e) => {
-    const input = e.target.value;
-    setText(input.slice(0, 1200)); 
-  }}
-  maxLength={1200} 
-  className="w-full h-full outline-none"
-/>
+                placeholder="Type your text here..."
+                value={text}
+                onChange={(e) => {
+                  const input = e.target.value;
+                  setText(input.slice(0, 1200)); 
+                }}
+                maxLength={1200} 
+                className="w-full h-full outline-none"
+              />
 
         <div className="flex justify-between mt-4 text-sm text-gray-600">
             <div>Үгийн тоо: {wordCount}</div>
