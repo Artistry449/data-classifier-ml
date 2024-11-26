@@ -40,7 +40,35 @@ const HomePage = () => {
     setText("");
   };
 
-  const handleCheck = () => {};
+  const handleCheck = async () => {
+    if (!text) {
+      console.log("Text is empty or undefined!");
+      return;
+    }
+
+    fetch("https://fafd-34-23-54-14.ngrok-free.app/process", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ test: text }),
+    })
+      .then((res) => {
+        console.log("res: ", res);
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+
+        return res.json();
+      })
+      .then((parsedRes) => {
+        console.log("parsedRes: ", parsedRes);
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+      });
+  };
 
   const wordCount = text
     .trim()
