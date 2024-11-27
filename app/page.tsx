@@ -1,13 +1,19 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import { FaRegPaste, FaRegCopy } from "react-icons/fa6";
-import { MdOutlineDeleteForever } from "react-icons/md";
+import Toolbar from "./_components/toolbar";
+import Input from "./_components/input";
+import Results from "./_components/results";
 import Tooltip from "./_components/tooltip";
+import Suggestion from "./_components/suggestion";
 
 const HomePage = () => {
   const [text, setText] = useState("");
+  const [wrongWords, setWrongWords] = useState<string[]>([]);
+  const [numberOfDifferentWord, setNumberOfDifferentWord] = useState(0);
+  const [suggestions, setSuggestions] = useState([]);
+  const [topic, setTopic] = useState("");
   const [isClipboardAvailable, setClipboardAvailable] = useState(false);
+  const serverURL = "https://bc32-34-41-92-217.ngrok-free.app/process";
 
   useEffect(() => {
     setClipboardAvailable(
@@ -46,7 +52,7 @@ const HomePage = () => {
       return;
     }
 
-    fetch("https://fafd-34-23-54-14.ngrok-free.app/process", {
+    fetch(serverURL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +61,6 @@ const HomePage = () => {
     })
       .then((res) => {
         console.log("res: ", res);
-
         if (!res.ok) {
           throw new Error(`HTTP error! Status: ${res.status}`);
         }
@@ -64,6 +69,19 @@ const HomePage = () => {
       })
       .then((parsedRes) => {
         console.log("parsedRes: ", parsedRes);
+        if (parsedRes.buruu_ug) {
+          setWrongWords(parsedRes.buruu_ug);
+        }
+        if (parsedRes.sedev) {
+          setTopic(parsedRes.sedev);
+        }
+        if (parsedRes.suggestions) {
+          setSuggestions(parsedRes.suggestions);
+        }
+        if (parsedRes.final_sentence) {
+          setNumberOfDifferentWord(parsedRes.final_sentence.split(" ").length);
+        }
+        console.log(suggestions);
       })
       .catch((err) => {
         console.log("err: ", err);
@@ -76,86 +94,65 @@ const HomePage = () => {
     .filter((word) => word).length;
   const charCount = text.replace(/\s/g, "").length;
 
+  const renderHighlightedText = () => {
+    const words = text.split(/\s+/);
+    return words.map((word, index) => {
+      const isWrong = wrongWords.includes(word);
+      return isWrong ? (
+        <Suggestion suggestions={[]}>
+          <span
+            key={index}
+            className="hover:cursor-pointer"
+            style={{
+              textDecoration: "underline",
+              textDecorationColor: "red",
+              color: "red",
+              marginRight: "4px",
+            }}
+          >
+            {word}
+          </span>
+        </Suggestion>
+      ) : (
+        <span
+          key={index}
+          style={{
+            textDecoration: "none",
+            textDecorationColor: "transparent",
+            color: "black",
+            marginRight: "4px",
+          }}
+        >
+          {word}
+        </span>
+      );
+    });
+  };
+
   return (
-    <div className="bg-yellow-400 flex items-center h-[500px] justify-center">
+    <div className="bg-[#F5F7F8] flex items-center h-full justify-center text-gray-600">
       <div className="flex flex-col md:flex-row w-full h-full max-w-6xl max-h-96">
         <div className="w-full flex h-full">
-          <div className="flex flex-col space-y-2 mr-3">
-            <Tooltip text="Бичвэрийг талбар дээр хуулах">
-              <button
-                onClick={handlePaste}
-                className={`bg-gray-100 p-2 rounded hover:bg-gray-200 ${
-                  !isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={!isClipboardAvailable}
-              >
-                <FaRegPaste size={20} />
-              </button>
-            </Tooltip>
-
-            <Tooltip text="Бичвэрийг хуулж авах">
-              <button
-                onClick={handleCopy}
-                className={`bg-gray-100 p-2 rounded hover:bg-gray-200 ${
-                  !isClipboardAvailable ? "cursor-not-allowed opacity-50" : ""
-                }`}
-                disabled={!isClipboardAvailable}
-              >
-                <FaRegCopy size={20} />
-              </button>
-            </Tooltip>
-
-            <Tooltip text="Бичвэрийг устгах">
-              <button
-                onClick={handleClear}
-                className="bg-gray-100 p-2 rounded hover:bg-gray-200"
-              >
-                <MdOutlineDeleteForever size={20} />
-              </button>
-            </Tooltip>
-          </div>
-          <div className="flex flex-col w-full border border-gray-300 resize-none bg-white rounded-lg shadow p-6 h-full">
-            <textarea
-              placeholder="Текстээ оруулна уу..."
-              value={text}
-              onChange={(e) => {
-                const input = e.target.value;
-                setText(input.slice(0, 1200));
-              }}
-              maxLength={1200}
-              className="w-full h-full outline-none"
-            />
-
-            <div className="flex justify-between mt-4 text-sm text-gray-600 items-center">
-              <div>Үгийн тоо: {wordCount}</div>
-              <div>
-                Тэмдэгтийн тоо: {charCount}/1200
-                <button
-                  onClick={handleCheck}
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border-green-700 rounded-xl ml-4"
-                >
-                  Алдааг шалгах
-                </button>
-              </div>
-            </div>
-          </div>
+          <Toolbar
+            handlePaste={handlePaste}
+            handleCopy={handleCopy}
+            handleClear={handleClear}
+            isClipboardAvailable={isClipboardAvailable}
+          />
+          <Input
+            text={text}
+            setText={setText}
+            renderHighlightedText={renderHighlightedText}
+            wordCount={wordCount}
+            charCount={charCount}
+            handleCheck={handleCheck}
+          />
         </div>
-        <div className="h-full grid col-span-1 ml-3 md:w-1/4 gap-3">
-          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-3">
-            <h2 className="text-sm font-semibold pb-1">
-              Алдаатай үгсийн жагсаалт
-            </h2>
-            <div className="w-full border bg-gray-700" />
-          </div>
-          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-2">
-            <h2 className="text-sm font-semibold pb-1">Текстийн төрөл</h2>
-            <div className="w-full border bg-gray-700" />
-          </div>
-          <div className=" border-gray-200 p-3 bg-white rounded-lg shadow row-span-1">
-            <h2 className="text-sm font-semibold pb-1">Ялгаатай үгийн тоо</h2>
-            <div className="w-full border bg-gray-700" />
-          </div>
-        </div>
+        <Results
+          wrongWords={wrongWords}
+          topic={topic}
+          numberOfDifferentWord={numberOfDifferentWord}
+        />
       </div>
     </div>
   );
