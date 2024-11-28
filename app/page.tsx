@@ -3,17 +3,17 @@ import React, { useState, useEffect } from "react";
 import Toolbar from "./_components/toolbar";
 import Input from "./_components/input";
 import Results from "./_components/results";
-import Tooltip from "./_components/tooltip";
-import Suggestion from "./_components/suggestion";
+import Rootwords from "./_components/rootwords";
 
 const HomePage = () => {
   const [text, setText] = useState("");
   const [wrongWords, setWrongWords] = useState<string[]>([]);
   const [numberOfDifferentWord, setNumberOfDifferentWord] = useState(0);
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<Object>();
   const [topic, setTopic] = useState("");
   const [isClipboardAvailable, setClipboardAvailable] = useState(false);
-  const serverURL = "https://bc32-34-41-92-217.ngrok-free.app/process";
+  const [rootWords, setRootWords] = useState("");
+  const serverURL = "https://68ce-34-73-149-71.ngrok-free.app/process";
 
   useEffect(() => {
     setClipboardAvailable(
@@ -79,6 +79,7 @@ const HomePage = () => {
           setSuggestions(parsedRes.suggestions);
         }
         if (parsedRes.final_sentence) {
+          setRootWords(parsedRes.final_sentence);
           setNumberOfDifferentWord(parsedRes.final_sentence.split(" ").length);
         }
         console.log(suggestions);
@@ -94,43 +95,8 @@ const HomePage = () => {
     .filter((word) => word).length;
   const charCount = text.replace(/\s/g, "").length;
 
-  const renderHighlightedText = () => {
-    const words = text.split(/\s+/);
-    return words.map((word, index) => {
-      const isWrong = wrongWords.includes(word);
-      return isWrong ? (
-        <Suggestion suggestions={[]}>
-          <span
-            key={index}
-            className="hover:cursor-pointer"
-            style={{
-              textDecoration: "underline",
-              textDecorationColor: "red",
-              color: "red",
-              marginRight: "4px",
-            }}
-          >
-            {word}
-          </span>
-        </Suggestion>
-      ) : (
-        <span
-          key={index}
-          style={{
-            textDecoration: "none",
-            textDecorationColor: "transparent",
-            color: "black",
-            marginRight: "4px",
-          }}
-        >
-          {word}
-        </span>
-      );
-    });
-  };
-
   return (
-    <div className="bg-[#F5F7F8] flex items-center h-full justify-center text-gray-600">
+    <div className="bg-[#F5F7F8] flex flex-col items-center h-full justify-center text-gray-600">
       <div className="flex flex-col md:flex-row w-full h-full max-w-6xl max-h-96">
         <div className="w-full flex h-full">
           <Toolbar
@@ -142,7 +108,8 @@ const HomePage = () => {
           <Input
             text={text}
             setText={setText}
-            renderHighlightedText={renderHighlightedText}
+            wrongWords={wrongWords}
+            suggestions={suggestions}
             wordCount={wordCount}
             charCount={charCount}
             handleCheck={handleCheck}
@@ -154,6 +121,7 @@ const HomePage = () => {
           numberOfDifferentWord={numberOfDifferentWord}
         />
       </div>
+      <Rootwords rootWords={rootWords} />
     </div>
   );
 };
