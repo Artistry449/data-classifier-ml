@@ -42,18 +42,22 @@ const renderHighlightedText = (
 
 const input = ({
   text,
+  summaryText,
   setText,
   wrongWords,
   suggestions,
   wordCount,
+  handleSummary,
   charCount,
   handleCheck,
 }: {
   text: string;
+  summaryText: string;
   setText: (value: string) => void;
   wrongWords: string[];
   suggestions: object;
   wordCount: number;
+  handleSummary: () => void;
   charCount: number;
   handleCheck: () => void;
 }) => {
@@ -132,7 +136,24 @@ const input = ({
           >
             Алдааг шалгах
           </button>
+          <button
+            onClick={handleSummary}
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border-green-700 rounded-xl ml-4"
+          >
+            Агуулгыг хураангуйлах
+          </button>
         </div>
+      </div>
+      <div>
+      <textarea
+      readOnly
+      className="border w-full mt-4 h-16"
+          placeholder="Хураангуй..."
+          value={summaryText}
+          style={{
+            caretColor: "black",
+          }}
+        />
       </div>
     </div>
   );

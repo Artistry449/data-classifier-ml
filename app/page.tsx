@@ -8,6 +8,7 @@ import Rootwords from "./_components/rootwords";
 const HomePage = () => {
   const [text, setText] = useState("");
   const [wrongWords, setWrongWords] = useState<string[]>([]);
+  const [summaryText, setSummaryText] = useState("");
   const [numberOfDifferentWord, setNumberOfDifferentWord] = useState(0);
   const [suggestions, setSuggestions] = useState<Object>();
   const [topic, setTopic] = useState("");
@@ -89,6 +90,25 @@ const HomePage = () => {
       });
   };
 
+  const handleSummary = async () => {
+    if (!text) {
+      console.log("Text is empty or undefined!");
+      return;
+    }
+
+    const res = await fetch("http://172.16.152.188:3300/summarize", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({content: text }),
+    })
+    const parsedRes = await res.json()
+    if (parsedRes.summary) {
+      setSummaryText(parsedRes.summary)
+    }
+  }
+  
   const wordCount = text
     .trim()
     .split(/\s+/)
